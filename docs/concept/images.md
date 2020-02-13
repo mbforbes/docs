@@ -24,7 +24,7 @@ unchanged for future experiments.
 
 ```
 ▶ beaker image create --name wordcount wordcount
-Pushing wordcount as wordcount (bp_qbjvcda1sed7)...
+Pushing wordcount as wordcount (im_qbjvcda1sed7)...
 The push refers to repository [gcr.io/ai2-beaker-core/public/bduufrl06q5ner2l0440]
 172b7a93847f: Preparing
 bca0cc28f8e3: Preparing
@@ -42,7 +42,7 @@ renamed, but its ID is guaranteed to remain stable. The following two commands a
 
 ```bash
 beaker image inspect examples/wordcount
-beaker image inspect bp_qbjvcda1sed7
+beaker image inspect im_qbjvcda1sed7
 ```
 
 ## Inspect
@@ -53,7 +53,7 @@ An image's metadata can be retrieved with `beaker image inspect`.
 ▶ beaker image inspect examples/wordcount
 [
     {
-        "id": "bp_qbjvcda1sed7",
+        "id": "im_qbjvcda1sed7",
         "user": {
             "id": "us_gpx6zozipf5o",
             "name": "examples",

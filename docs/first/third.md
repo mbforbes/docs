@@ -1,26 +1,29 @@
 # Create an Experiment Spec
 
-In this example, you'll run your experiment using your blueprint from the CLI and also create a corresponding experiment spec.
+In this example, you'll run your experiment using your image from the CLI and also create a corresponding experiment spec.
 
-You'll use your existing blueprint and dataset, as defined in the [prior example](second.md). So, complete that step first if needed. 
+You'll use your existing image and dataset, as defined in the [prior example](second.md). So, complete that step first if needed. 
 
 # From the Command Line 
 
-Enter the following from your Terminal shell, using the This example assumes you've successfully completed [Beaker and Docker installation](install.md), and you've set up your [Beaker.org](https://www.beaker.org) account so that you can run experiments as shown in [Your First Experiment](first.md).
+Using this example assumes you've successfully completed [Beaker and Docker installation](install.md), and you've set up your [Beaker.org](https://www.beaker.org) account so that you can run experiments as shown in [Your First Experiment](first.md).
+Enter the following from your Terminal shell:
 
-https://beaker-pub.allenai.org/ex/ex_lhqimp6vaffk
+https://beaker.org/ex/ex_lhqimp6vaffk
 
-beaker experiment create \
-    --blueprint mymnist \
+```
+$ beaker experiment create \
+    --image mymnist \
     --env EPOCH=50 \
     --source mymnist-dataset:/data \
     --result-path /output
     
-Experiment ex_lhqimp6vaffk submitted. See progress at https://beaker-pub.allenai.org/ex/ex_lhqimp6vaffk
+Experiment ex_lhqimp6vaffk submitted. See progress at https://beaker.org/ex/ex_lhqimp6vaffk
+```
 
 # Create a Blueprint and Dataset 
 
-In this step, you'll use existing experiment code, data, and a Docker file. You'll define your own Beaker *blueprint*, to define and manage the experiment you will run, and a Beaker *dataset* to hold the source data. This example locally reproduces the existing MNIST experiment of the [prior example](first.md). 
+In this step, you'll use existing experiment code, data, and a Docker file. You'll define your own Beaker *image*, to define and manage the experiment you will run, and a Beaker *dataset* to hold the source data. This example locally reproduces the existing MNIST experiment of the [prior example](first.md). 
 
 Don't worry if you don't know much about Python, Pytorch, or MNIST data; you don't need to. Rather, this exercise simply shows you how to run a full experiment with Beaker. You should then be able to apply these concepts to your own code, data, and experiments, to manage them with Beaker.
 
@@ -39,6 +42,7 @@ Python 3.7.2 (default, Dec 29 2018, 00:00:04)
 Type "help", "copyright", "credits" or "license" for more information.
 >>> 
 ```
+
 This shows your Python version, date, and so on, if successfully configured.
 
 From the Python prompt (`>>>`, above) you can verify your Pytorch installation too:
@@ -139,19 +143,20 @@ This Docker CLI command instructed Docker to build an image based on the files a
 
 In later examples, we'll show you how to set up your own Dockerfile for building images. For now, simply use the provided Dockerfile that you downloaded from Github. If you want, you can view the Dockerfile's txt contents to see its base image, ENV instructions, and so on. For now, don't make any changes to it.
 
-## Create a Beaker blueprint
+## Create a Beaker Image
 
-Now you have a Docker image of a complete local experiment's codebase and dataset. Next, create a Beaker *blueprint* to represent this experiment and push it to Beaker.org for management and reuse.
+Now you have a Docker image of a complete local experiment's codebase and dataset. Next, create a Beaker *image* to represent this experiment and push it to Beaker.org for management and reuse.
 
 ```
-$ beaker blueprint create -n <mymnist> mymnist
+$ beaker image create --name <mymnist> mymnist
 ```
 
-Note can have only one Beaker blueprint called mynist. So, if you've created an mymnist blueprint previously, change <mymnist> to a unique name, such as mymnist2. 
+Note can have only one Beaker image called mynist. So, if you've created an mymnist image previously, change <mymnist> to a unique name, such as mymnist2. 
 
-If you successfully create the blueprint, you should see output such as:
+If you successfully create the image, you should see output such as:
+
 ```
-Pushing mymnist as mnist (bp_8ugouwgec4gn)...
+Pushing mymnist as mnist (im_8ugouwgec4gn)...
 <...preparing, waiting, etc...>
 The push refers to repository [gcr.io/ai2-beaker-core/public/bhq49ga41h4qcklhc79g]
 latest: digest: sha256:569de2a77ba779dbfddf6cc897f7abb17ef674239021b5f05e63e596aa7db5c3 size: 3058
@@ -159,15 +164,15 @@ Done.
 $
 ```
 
-Notice that each blueprint is assigned a unique ID, in addition to the name we chose. Any object,
-including blueprints, can be referred to by either its name or ID. Like any object, a blueprint can be
+Notice that each image is assigned a unique ID, in addition to the name we chose. Any object,
+including images, can be referred to by either its name or ID. Like any object, a image can be
 renamed, but its ID is guaranteed to remain stable. The following two commands are equivalent:
 
-### Inspect the blueprint
+### Inspect the Image
 
 ```
-$ beaker blueprint inspect mymnist
-$ beaker blueprint inspect bp_8ugouwgec4gn
+$ beaker image inspect mymnist
+$ beaker image inspect im_8ugouwgec4gn
 ```
 
 Either should produce CLI output such as:
@@ -175,7 +180,7 @@ Either should produce CLI output such as:
 ```
 [
     {
-        "id": "bp_8ugouwgec4gn",
+        "id": "im_8ugouwgec4gn",
         "user": {
             "id": "<your_user_id>",
             "name": "<your_user_name>",
@@ -191,10 +196,10 @@ Either should produce CLI output such as:
 
 ### Pulling a Blueprint
 
-You can pull your blueprint to your local machine at any time with `beaker blueprint pull`.
+You can pull your image to your local machine at any time with `beaker image pull`.
 
 ```
-$ beaker blueprint pull mymnist
+$ beaker image pull mymnist
 Pulling gcr.io/ai2-beaker-core/public/bduufrl06q5ner2l0440 ...
 latest: Pulling from ai2-beaker-core/public/bduufrl06q5ner2l0440
 Digest: sha256:4c70545c15cca8d30b3adfd004a708fcdec910f162fa825861fe138200f80e19
@@ -207,7 +212,7 @@ internally assigned tag  `gcr.io/ai2-beaker-core/public/bduufrl06q5ner2l0440` by
 a more human-friendly tag, set it with an additional argument:
 
 ```
-$ beaker blueprint pull mymnist friendly-name
+$ beaker image pull mymnist friendly-name
 ```
 
 ## Create a dataset
@@ -232,7 +237,7 @@ $ beaker dataset create --name mymnist-dataset ./data
 Uploading mymnist-dataset (ds_q76gp0s33d01)...
 Done.
 ```
-Notice that the dataset is assigned a unique ID (above, `ds_q76gp0s33d01`; yours will differ) in addition to the name we chose (`mymnist-dataset`). Like blueprints, datasets can be referred to by its name or ID. A dataset can be renamed, but its ID is guaranteed to remain stable. The following two commands are equivalent:
+Notice that the dataset is assigned a unique ID (above, `ds_q76gp0s33d01`; yours will differ) in addition to the name we chose (`mymnist-dataset`). Like images, datasets can be referred to by its name or ID. A dataset can be renamed, but its ID is guaranteed to remain stable. The following two commands are equivalent:
 
 ```
 $ beaker dataset inspect mymnist-dataset
@@ -305,11 +310,11 @@ Downloading dataset ds_q76gp0s33d01 to directory fetched/ ... done.
 
 ## Clean up
 
-To clean up blueprints, simply `docker image rm` any images created above.
+To clean up images, simply `docker image rm` any images created above.
 
 To clean up datasets, simply remove any unneeded dataset directories.
 
-Because blueprints and datasets are immutable, they can't be deleted from the Beaker cloud. It will be possible to archive datasets in the near future.
+Because images and datasets are immutable, they can't be deleted from the Beaker cloud. It will be possible to archive datasets in the near future.
 
 If all of the above is working for you, it's time to create your own experiment spec, which is the [next example](third.md).
 

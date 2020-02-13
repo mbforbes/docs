@@ -48,20 +48,7 @@ To set up Beaker:
 
 1. Run `beaker configure`.
 2. When prompted for the Beaker address, enter https://beaker.org
-3. When prompted for the user token, enter your token. Your token is available from your **Settings** at [Beaker.org](https://beaker.org). To find it, when signed in to Beaker, from the top-right corner click your **user name**, **Settings**.
-
-For example:
-
-```
-% beaker configure⏎
-Beaker Configuration
-
-Press enter to keep the current value of any setting.
-Results will be saved to /Users/username/.beaker
-
-Beaker address [localhost:9027]: https://beaker-pub.allenai.org⏎
-User token []: <your token>⏎
-```
+3. When prompted for the user token, enter your token. Your token is available from your **Settings** at [Beaker.org](https://beaker.org). To find it, when signed in to Beaker, from the top-right corner click your [**user name**, **Settings**](https://beaker.org/user).
 
 Run `beaker configure test` to check that your configuration is correct.
 
@@ -75,9 +62,10 @@ Authenticating with user token: <your token>
 
 Authenticated as user: "<your username>" (<your id>)
 ```
+
 ## Docker
 
-You must install Docker to use Beaker, because Beaker is built around managing experiment code contained in Docker containers.
+You must install Docker to use Beaker, because Beaker packages experiment code using Docker containers.
 
 Install the appropriate Docker Desktop version from the [Docker site](https://www.docker.com/products/docker-desktop), following Docker's instructions.
 

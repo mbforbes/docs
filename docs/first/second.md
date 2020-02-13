@@ -1,6 +1,6 @@
-# Create a Blueprint and Dataset 
+# Create a Blueprint and Dataset
 
-In this step, you'll use existing experiment code, data, and a Docker file. You'll define your own Beaker *blueprint*, to define and manage the experiment you will run, and a Beaker *dataset* to hold the source data. This example locally reproduces the existing MNIST experiment of the [prior example](first.md). 
+In this step, you'll use existing experiment code, data, and a Docker file. You'll define your own Beaker *image*, to define and manage the experiment you will run, and a Beaker *dataset* to hold the source data. This example locally reproduces the existing MNIST experiment of the [prior example](first.md).
 
 Don't worry if you don't know much about Python, Pytorch, or MNIST data; you don't need to. Rather, this exercise simply shows you how to run a full experiment with Beaker. You should then be able to apply these concepts to your own code, data, and experiments, to manage them with Beaker.
 
@@ -14,10 +14,10 @@ After installing, you can verify your configuration by entering `python` from yo
 
 ```
 $ python
-Python 3.7.2 (default, Dec 29 2018, 00:00:04) 
+Python 3.7.2 (default, Dec 29 2018, 00:00:04)
 [Clang 4.0.1 (tags/RELEASE_401/final)] :: Anaconda, Inc. on darwin
 Type "help", "copyright", "credits" or "license" for more information.
->>> 
+>>>
 ```
 This shows your Python version, date, and so on, if successfully configured.
 
@@ -27,18 +27,18 @@ From the Python prompt (`>>>`, above) you can verify your Pytorch installation t
 >>> import torch; print(torch.__version__)
 1.0.0
 ```
-    
+
 Which shows your Pytorch/Torchvision version, if successfully configured.
 
 Finally, if you are new to Python for this tutorial, know you quit the Python shell (`>>>`) and return to your Terminal shell by pressing `control+d`. Make sure these configurations are set up before proceeding.
 
 ## Get the existing code and data
 
-For this tutorial, use the code from [https://github.com/beaker/mnist-example](https://github.com/beaker/mnist-example). 
+For this tutorial, use the code from [https://github.com/beaker/mnist-example](https://github.com/beaker/mnist-example).
 
-1. Download/clone https://github.com/beaker/mnist-example. An easy way to do this is to click **Clone or download** from the GitHub page and the **Download** to download the ZIP archive. You'll want to run this code from a directory where you have read/write permission, so if needed, extract the ZIP to such a location (for example, to `~/Documents/mnist-example-master`). 
+1. Download/clone https://github.com/beaker/mnist-example. An easy way to do this is to click **Clone or download** from the GitHub page and the **Download** to download the ZIP archive. You'll want to run this code from a directory where you have read/write permission, so if needed, extract the ZIP to such a location (for example, to `~/Documents/mnist-example-master`).
 
-2. Download the dataset from from [here](https://beaker.org/ds/ds_kf6v919aq7hk/details) to a /data subdirectory of your `mnist-example-master` directory (for example, `~/Documents/mnist-example-master/data`). The *dataset* contains the files, or directories of files, referenced by the code of the experiment. A convenient way to download the MNIST dataset from Beaker is to go to your `mnist-example-master` directory from your Terminal shell, then run: 
+2. Download the dataset from from [here](https://beaker.org/ds/ds_kf6v919aq7hk/details) to a /data subdirectory of your `mnist-example-master` directory (for example, `~/Documents/mnist-example-master/data`). The *dataset* contains the files, or directories of files, referenced by the code of the experiment. A convenient way to download the MNIST dataset from Beaker is to go to your `mnist-example-master` directory from your Terminal shell, then run:
 
   ```
   $ beaker dataset fetch --output=./data ds_kf6v919aq7hk
@@ -97,9 +97,9 @@ If this doesn't run for you, double-check your Python (or perhaps Beaker) config
 
 All of the above simply represents an experiment's code and dataset running locally, as you would do without using Beaker. This code produces locally what the [prior example](first.md) produced using the Beaker cloud. (This is likely backwards from how you would first create a local experiment, to then add it to Beaker not the other way around...but for tutorial purposes, you can pretend that the mnist code and data is only local, so you can now learn how to *Beakerize* it.)
 
-The next step towards making this code and data managed in Beaker is to build a corresponding a Docker image. 
+The next step towards making this code and data managed in Beaker is to build a corresponding a Docker image.
 
-## Build a Docker image 
+## Build a Docker image
 
 To build the docker image from the existing Dockerfile (which you cloned from Github), from the command line run:
 
@@ -108,28 +108,31 @@ $ docker build -t mymnist .
 ```
 
 You should see the Docker steps complete, and conclude successfully with a message such as:
+
 ```
 ...
 ...
 Successfully tagged mymnist:latest
 ```
-This Docker CLI command instructed Docker to build an image based on the files at the current directory, using the Dockerfile that you cloned to this location, and you tagged it `mynist`. 
+
+This Docker CLI command instructed Docker to build an image based on the files at the current directory, using the Dockerfile that you cloned to this location, and you tagged it `mynist`.
 
 In later examples, we'll show you how to set up your own Dockerfile for building images. For now, simply use the provided Dockerfile that you downloaded from Github. If you want, you can view the Dockerfile's txt contents to see its base image, ENV instructions, and so on. For now, don't make any changes to it.
 
-## Create a Beaker blueprint
+## Create a Beaker Image
 
-Now you have a Docker image of a complete local experiment's codebase and dataset. Next, create a Beaker *blueprint* to represent this experiment and push it to Beaker.org for management and reuse.
+Now you have a Docker image of a complete local experiment's codebase and dataset. Next, create a Beaker *image* to represent this experiment and push it to Beaker.org for management and reuse.
 
 ```
-$ beaker blueprint create -n <mymnist> mnist
+$ beaker image create -n <mymnist> mnist
 ```
 
-Note can have only one Beaker blueprint called mymnist. So, if you've created a mymnist blueprint previously, change <mymnist> to a unique name, such as mymnist2. 
+Note can have only one Beaker image called mymnist. So, if you've created a mymnist image previously, change <mymnist> to a unique name, such as mymnist2.
 
-If you successfully create the blueprint, you should see output such as:
+If you successfully create the image, you should see output such as:
+
 ```
-Pushing mymnist as mnist (bp_8ugouwgec4gn)...
+Pushing mymnist as mnist (im_8ugouwgec4gn)...
 <...preparing, waiting, etc...>
 The push refers to repository [gcr.io/ai2-beaker-core/public/bhq49ga41h4qcklhc79g]
 latest: digest: sha256:569de2a77ba779dbfddf6cc897f7abb17ef674239021b5f05e63e596aa7db5c3 size: 3058
@@ -137,15 +140,15 @@ Done.
 $
 ```
 
-Notice that each blueprint is assigned a unique ID, in addition to the name we chose. Any object,
-including blueprints, can be referred to by either its name or ID. Like any object, a blueprint can be
+Notice that each image is assigned a unique ID, in addition to the name we chose. Any object,
+including image, can be referred to by either its name or ID. Like any object, a image can be
 renamed, but its ID is guaranteed to remain stable. The following two commands are equivalent:
 
-### Inspect the blueprint
+### Inspect the image
 
 ```
-$ beaker blueprint inspect mymnist
-$ beaker blueprint inspect bp_8ugouwgec4gn
+$ beaker image inspect mymnist
+$ beaker image inspect im_8ugouwgec4gn
 ```
 
 Either should produce CLI output such as:
@@ -153,7 +156,7 @@ Either should produce CLI output such as:
 ```
 [
     {
-        "id": "bp_8ugouwgec4gn",
+        "id": "im_8ugouwgec4gn",
         "user": {
             "id": "<your_user_id>",
             "name": "<your_user_name>",
@@ -167,12 +170,12 @@ Either should produce CLI output such as:
 ]
 ```
 
-### Pull a blueprint
+### Pull an Image
 
-You can pull your blueprint to your local machine at any time with `beaker blueprint pull`.
+You can pull your image to your local machine at any time with `beaker image pull`.
 
 ```
-$ beaker blueprint pull mymnist
+$ beaker image pull mymnist
 Pulling gcr.io/ai2-beaker-core/public/bduufrl06q5ner2l0440 ...
 latest: Pulling from ai2-beaker-core/public/bduufrl06q5ner2l0440
 Digest: sha256:4c70545c15cca8d30b3adfd004a708fcdec910f162fa825861fe138200f80e19
@@ -185,7 +188,7 @@ internally assigned tag  `gcr.io/ai2-beaker-core/public/bduufrl06q5ner2l0440` by
 a more human-friendly tag, set it with an additional argument:
 
 ```
-$ beaker blueprint pull mymnist friendly-name
+$ beaker image pull mymnist friendly-name
 ```
 
 ## Create a dataset
@@ -210,7 +213,7 @@ $ beaker dataset create --name mymnist-dataset ./data
 Uploading mymnist-dataset (ds_q76gp0s33d01)...
 Done.
 ```
-Notice that the dataset is assigned a unique ID (above, `ds_q76gp0s33d01`; yours will differ) in addition to the name we chose (`mymnist-dataset`). Like blueprints, datasets can be referred to by its name or ID. A dataset can be renamed, but its ID is guaranteed to remain stable. The following two commands are equivalent:
+Notice that the dataset is assigned a unique ID (above, `ds_q76gp0s33d01`; yours will differ) in addition to the name we chose (`mymnist-dataset`). Like images, datasets can be referred to by its name or ID. A dataset can be renamed, but its ID is guaranteed to remain stable. The following two commands are equivalent:
 
 ```
 $ beaker dataset inspect mymnist-dataset
@@ -271,9 +274,10 @@ $ beaker dataset inspect --manifest mymnist-dataset
 
 ### Download
 
-As you might recall from setting up this code and data earlier, you can download a dataset to your local drive at any time with `beaker dataset fetch`. Beaker's
-`fetch` command follows the same rules as the standard `cp` command. The following example downloads
-the mymnist-dataset dataset to an empty directory. Notice how the original filename is restored by default.
+As you might recall from setting up this code and data earlier, you can download a dataset to your local drive at any time with `beaker dataset fetch`.
+Beaker datasets are always directories and the `fetch` command follows the same rules as the standard `cp` command.
+If the destination directory already exists, then `fetch` will copy the dataset files into that directory.
+The following example downloads the mymnist-dataset dataset to an empty directory. Notice how the original filename is restored by default.
 
 ```
 $ mkdir fetched
