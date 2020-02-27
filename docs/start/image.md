@@ -36,9 +36,9 @@ Finally, if you are new to Python for this tutorial, know you quit the Python sh
 
 For this tutorial, use the code from [https://github.com/beaker/mnist-example](https://github.com/beaker/mnist-example).
 
-1. Download/clone https://github.com/beaker/mnist-example. An easy way to do this is to click **Clone or download** from the GitHub page and the **Download** to download the ZIP archive. You'll want to run this code from a directory where you have read/write permission, so if needed, extract the ZIP to such a location (for example, to `~/Documents/mnist-example-master`).
+1. Download https://github.com/beaker/mnist-example to your machine.
 
-2. Download the dataset from from [here](https://beaker.org/ds/ds_kf6v919aq7hk/details) to a /data subdirectory of your `mnist-example-master` directory (for example, `~/Documents/mnist-example-master/data`). The *dataset* contains the files, or directories of files, referenced by the code of the experiment. A convenient way to download the MNIST dataset from Beaker is to go to your `mnist-example-master` directory from your Terminal shell, then run:
+2. Download the dataset from from [here](https://beaker.org/ds/ds_kf6v919aq7hk/details) to a subdirectory named `data` in `mnist-example-master`.  The *dataset* contains the files referenced by the code of the experiment. A convenient way to download the MNIST dataset from Beaker is to go to your `mnist-example-master` directory from your Terminal shell, then run:
 
   ```
   $ beaker dataset fetch --output=./data ds_kf6v919aq7hk
@@ -67,22 +67,21 @@ Some environment variables must be exported for the Python code to run.
 
 1. Export the python path:
 
-  ```
-  $ export PYTHONPATH=.
-  ```
+   ```
+   $ export PYTHONPATH=.
+   ```
 
 2. Set and export the EPOCH environment variable, required by this experiment:
 
-  ```
-  $ EPOCH=10
-  $ export EPOCH
-  ```
+   ```
+   $ export EPOCH=10
+   ```
 
 3. From your `mnist-example-master` directory, run the main program with Python 3:
 
-  ```
-  $ python3 beaker_pytorch/main.py
-  ```
+   ```
+   $ python3 beaker_pytorch/main.py
+   ```
 
 You should see the code run, then conclude with a message such as:
 
@@ -95,9 +94,9 @@ By default, this code puts results in an `/output` subdirectory, in `metrics.jso
 
 If this doesn't run for you, double-check your Python (or perhaps Beaker) configurations; note that Python 3.6.5 or later is required by this experiment.
 
-All of the above simply represents an experiment's code and dataset running locally, as you would do without using Beaker. This code produces locally what the [prior example](experiment.md) produced using the Beaker cloud. (This is likely backwards from how you would first create a local experiment, to then add it to Beaker not the other way around...but for tutorial purposes, you can pretend that the mnist code and data is only local, so you can now learn how to *Beakerize* it.)
+All of the above simply represents an experiment's code and dataset running locally, as you would do without using Beaker. This code produces locally what the [prior example](experiment.md) produced using the Beaker cloud.
 
-The next step towards making this code and data managed in Beaker is to build a corresponding a Docker image.
+The next step towards packaging this code and data so it can be run in Beaker is to build a corresponding a Docker image.
 
 ## Build a Docker image
 
@@ -221,50 +220,36 @@ $ beaker dataset inspect ds_q76gp0s33d01
 ### Inspect the dataset
 
 A dataset can be inspected with `beaker dataset inspect`, which produces a JSON representation of
-the dataset. An optional `--manifest` flag, if provided, will also produce the dataset's contents.
+the dataset.
 
 ```
-$ beaker dataset inspect --manifest mymnist-dataset
+$ beaker dataset inspect mymnist-dataset
 [
     {
-        "id": "ds_q76gp0s33d01",
-        "user": {
-            "id": "<your_user_id>",
-            "name": "<your_user_name>",
-            "display_name": ""
-        },
+        "id": "ds_9ux8avul9w7k",
         "name": "mymnist-dataset",
-        "created": "2019-02-25T22:50:57.793211Z",
-        "committed": "2019-02-25T22:51:21.968051Z",
-        "manifest": {
-            "id": "ds_q76gp0s33d01",
-            "files": [
-                {
-                    "file": "/.DS_Store",
-                    "size": 6148,
-                    "time_last_modified": "2019-02-25T22:50:57.98Z"
-                },
-                {
-                    "file": "/t10k-images-idx3-ubyte",
-                    "size": 7840016,
-                    "time_last_modified": "2019-02-25T22:51:02.019Z"
-                },
-                {
-                    "file": "/t10k-labels-idx1-ubyte",
-                    "size": 10008,
-                    "time_last_modified": "2019-02-25T22:51:02.418Z"
-                },
-                {
-                    "file": "/train-images-idx3-ubyte",
-                    "size": 47040016,
-                    "time_last_modified": "2019-02-25T22:51:21.097Z"
-                },
-                {
-                    "file": "/train-labels-idx1-ubyte",
-                    "size": 60008,
-                    "time_last_modified": "2019-02-25T22:51:21.644Z"
-                }
-            ]
+        "owner": {
+            "id": "us_wvnghctl47k0",
+            "name": "ai2",
+            "displayName": "AI2"
+        },
+        "author": {
+            "id": "us_7ay01can5lmg",
+            "name": "michaels",
+            "displayName": "Michael Schmitz"
+        },
+        "workspaceRef": {
+            "id": "us_wvnghctl47k0/01DQ8VCF2M5ET36Y87QF3HK10W",
+            "name": "ai2/MichaelSchmitz"
+        },
+        "created": "2020-02-27T23:10:05.842869Z",
+        "committed": "2020-02-27T23:12:06.801955Z",
+        "archived": false,
+        "storage": {
+            "address": "https://data.beaker.org",
+            "id": "01e24em3s4d82e571p01hpk4cx",
+            "token": "...",
+            "tokenExpires": "2020-02-28T11:13:24.378467869Z"
         }
     }
 ]
