@@ -4,27 +4,9 @@ Beaker manages experiments as Docker containers combined with additional metadat
 
 Don't worry if you don't know about Python, Pytorch, or MNIST data; you won't need to here. This exercise simply shows you how to run a full experiment with Beaker in a way that should be easy to understand.
 
-## Experiments on Beaker.org
+## Running your experiment from the CLI
 
-First, go to the [MNIST example](https://beaker.org/ex/ex_kjkr81zmbfio) page on Beaker.org. (Sign in if you haven't already.)
-
-![Beaker page for MNIST example](../images/beaker_ex.png)
-
-You can see an existing experiment, already provided by Beaker. You can click around, to see Beaker features such as its **Experiment Graph** and **Spec**.
-
-Re-run this experiment in the Beaker clould by simply clicking **Re-run** in the top-right corner of the experiment page. If you do so, don't modify the experiment spec; just confirm by clicking **Re-run** from **Re-run Experiment**.
-
-<img src="../images/re_run.png" width="400">
-
-You should see a new experiment page with a unique experiment ID, and watch its task progress through provisioning to completion. When complete you can now see this re-run experiment's information on Beaker.org.
-
-That's how Beaker makes experiments simple to share with others, and keeps track of different runs of a base experiment.
-
-Next, you should use the Beaker CLI to run the same experiment from your local machine.
-
-## Local experiments
-
-For these steps to work, you must have completed [installing Beaker](install.md). When installed:
+For these instructions to work, you must have completed [installing Beaker](install.md). When installed:
 
 1. From the existing [MNIST example](https://beaker.org/ex/ex_kjkr81zmbfio) experiment page on Beaker.org, click the **Spec** tab.
 
