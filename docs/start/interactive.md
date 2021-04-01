@@ -73,3 +73,47 @@ Note: Some features, like user mapping, will not work with all images.
 In the AllenNLP image, you will see a prompt like `I have no name!@fd82c7800efa:~$`.
 Please contact the Beaker team if you need help setting up a custom environment
 for your interactive sessions.
+
+## Git Authentication
+
+You can authenticate with GitHub using a personal access token or
+[an SSH key](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
+Here, we describe authenticating with an access token.
+
+First, generate a new personal access token [here](https://github.com/settings/tokens/new)
+and grant it the repo scope.
+
+![Generating a personal access token with repo scope](/docs/images/github-personal-access-token-scope.png)
+
+You will only be able to view the token on GitHub when it is created so store it in 1Password
+for later use.
+
+Now, you should be able to clone any GitHub repository over HTTPS.
+When prompted for your password, enter the personal access token.
+
+### Cache Credentials
+
+To avoid having to enter you credentials on every Git operation, run the following:
+
+```
+git config --global credential.helper store
+```
+
+This will cache your personal access token at `~/.git-credentials`.
+
+### Name and Email
+
+Before making a commit, you must tell Git who you are:
+
+```
+git config --global user.name <name>
+git config --global user.email <email>
+```
+
+This will be cached in `~/.gitconfig` and persist across sessions on the same machine.
+
+### Deleting a Token
+
+If your token is compromised, you can delete it [here](https://github.com/settings/tokens).
+
+![Deleting a personal access token](/docs/images/github-personal-access-token-delete.png)
