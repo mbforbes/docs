@@ -5,7 +5,7 @@ rapid, reproducible research.
 
 ## Other Resources
 
-* [Beaker video tutorial](https://drive.google.com/drive/folders/1mEvcKSTmFBH9abf0nYcka3-P8jGEWCmE)
+* [Beaker video tutorial](https://drive.google.com/file/d/1x5YnFcty-L7KKrFbLtIR8ZkA9mGvxiqz/view)
 
 ## User Guide
 
