@@ -14,28 +14,26 @@ Exported environment variables can be expanded with built-in `{{.Env.varName}}`.
 
 The following command demonstrates expansion of an environment variable.
 
-1. Upload the `busybox` Docker image:
-   ```bash
-   docker pull busybox
-   beaker image create --name busybox busybox
-   ```
-
 1. Create an experiment which prints a substituted value.
+
    ```yaml
    version: v2-alpha
    description: Print {{.Env.USER}}
    tasks:
    - name: print
      image:
-       beaker: busybox
+       docker: busybox:latest
      arguments: ['sh', '-c', 'echo Parameter value: $ENV']
      envVars:
-       ENV: {{.Env.USER}}
+     - name: ENV
+       value: {{.Env.USER}}
      result:
        path: /none
+     context:
+       cluster: ai2/example
    ```
 
-1. Run: `beaker experiment create -f spec.yaml`
+1. Run: `beaker experiment create spec.yaml`
 
 ### Additional Reading
 

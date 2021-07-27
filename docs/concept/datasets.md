@@ -43,64 +43,64 @@ This is a single file.
 
 ## Upload
 
-You can upload any file or collection of files as a dataset with a single command. Here we'll create
-two datasets.
-
-Our first dataset is a single file. Single-file datasets are treated by the system as a file.
+You can upload any file or collection of files as a dataset with a single
+command `beaker dataset create`. Beaker treats all datasets as a directory, even
+when uploading a single file. In this special case the dataset contains a single
+file with the same name as the original file.
 
 ```
-▶ beaker dataset create --name my-file-dataset ./singlefile
-Uploading my-file-dataset (ds_as6t74lspoc5)...
+▶ beaker dataset create --name my-dataset ./some-path
+Uploading my-dataset (ds_as6t74lspoc5)...
 Done.
 ```
 
-Our second dataset contains several files. This type of dataset is treated by the system as a
-directory. _(To upload a single file as a directory, simply place the file in an empty directory and
-upload the directory.)_
-
-```
-▶ beaker dataset create --name my-dir-dataset ./multifile
-Uploading my-dir-dataset (ds_4kjgriri1sro)...
-Done.
-```
-
-Notice that each dataset is assigned a unique ID in addition to the name we chose. Any object,
-including datasets, can be referred to by its name or ID. Like any object, a dataset can be renamed,
-but its ID is guaranteed to remain stable. The following two commands are equivalent:
+Notice that each dataset is assigned a unique ID in addition to the name we chose. Any object such
+as a dataset can be referred to by its name or ID. IDs are guaranteed to remain stable while names
+can change.
 
 ```bash
-beaker dataset inspect my-file-dataset
-beaker dataset inspect ds_as6t74lspoc5
+beaker dataset get examples/moby
+beaker dataset get ds_1hz9k6sgxi0a
 ```
 
 ## Inspect
 
-A dataset can be inspected with `beaker dataset inspect`, which produces a JSON representation of
-the dataset.
+A dataset can be inspected with `beaker dataset get`.
 
 ```
-▶ beaker dataset inspect my-file-dataset
+▶ beaker dataset get examples/moby
+ID             WORKSPACE          AUTHOR    CREATED              SOURCE EXECUTION
+examples/moby  examples/examples  examples  2018-08-22 15:35:55  N/A
+```
+
+A more detailed JSON view is available via `--format=json`
+
+```
+▶ beaker dataset get --format=json examples/moby
 [
     {
-        "id": "ds_as6t74lspoc5",
-        "name": "my-file-dataset",
+        "id": "ds_1hz9k6sgxi0a",
+        "name": "moby",
+        "fullName": "examples/moby",
         "owner": {
-          ...
+            "id": "us_gpx6zozipf5o",
+            "name": "examples",
+            "displayName": "Beaker Examples"
         },
         "author": {
-          ...
+            "id": "us_gpx6zozipf5o",
+            "name": "examples",
+            "displayName": "Beaker Examples"
         },
         "workspaceRef": {
-          ...
+            "id": "01DQQZ5SFZ9KQXW59PGC7DK7C4",
+            "name": "examples"
         },
-        "created": "2020-02-13T23:47:10.309419Z",
-        "committed": "2020-02-13T23:47:11.413472Z",
-        "archived": false,
+        "created": "2018-08-22T22:35:55.223927Z",
+        "committed": "2018-08-22T22:35:56.121653Z",
+        "description": "Full text of Moby Dick by Herman Melville from https://www.gutenberg.org/files/2701/old/moby10b.txt",
         "storage": {
-            "address": "https://data.beaker.org",
-            "id": "01e10f5y3qfhe2wtkatcm7c2sp",
-            "token": "...",
-            "tokenExpires": "2020-02-14T11:48:35.778244357Z"
+            ...
         }
     }
 ]
@@ -113,48 +113,41 @@ You can download a dataset to your local drive at any time with `beaker dataset 
 the single-file dataset to an empty directory. Notice how the original filename is restored by default.
 
 ```
-▶ mkdir fetched
-▶ beaker dataset fetch -o fetched my-file-dataset
-Downloading dataset ds_as6t74lspoc5 to file fetched/singlefile ... done.
+▶ beaker dataset fetch examples/moby -o moby
+Downloading examples/moby to moby
+Files: 1          /          1 [================================================] 100% ✔
+Bytes: 1.198 MiB  /  1.198 MiB [================================================] 100% ✔
+Completed in 1.7s: 713.5 KiB/s, 1 files/s
 
-▶ cat fetched/singlefile
-This is a single file.
+▶ ls moby
+moby10b.txt
 ```
 
 ## Use Datasets in an Experiment
 
-To demonstrate how to use a dataset in an experiment, we'll run the same find command we ran above
-as a Beaker experiment. The code for this experiment's image can be found
-[here](../examples/list-files).
+To demonstrate how to use a dataset in an experiment, we'll run the same `ls`
+command we ran above as a Beaker experiment. The code for this experiment's
+image can be found [here](../examples/list-files).
 
 ```bash
-cat > find.yaml << EOF
+cat << EOF | beaker experiment create -
 version: v2-alpha
 tasks:
 - name: list-files
   image: 
     beaker: examples/list-files
   envVars:
-    LIST_DIR: /data
+    - name: LIST_DIR
+      value: /data
   datasets:
   - mountPath: /data
     source:
-      beaker: my-account/my-dataset
+      beaker: examples/moby
   result:
     path: /results
+  context:
+    cluster: ai2/example
 EOF
 ```
-```
-beaker experiment create -f find.yaml
-```
 
-This command will print a URL to your experiment, which should complete momentarily. Observe the
-logs emitted from the experiment should be similar to the find command above.
-
-## Cleanup
-
-To clean up, simply remove the `~/dataset-example` directory we created at the beginning.
-
-To maintain reproducible experiments, you should be cautious about deleting datasets.  That said,
-large datasets can cost a significant amount indefinately.  You can delete a dataset with
-`beaker dataset delete`.
+This command will print a URL to your experiment, which should complete momentarily.

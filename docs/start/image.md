@@ -92,15 +92,20 @@ Test set: Average loss: 0.2057, Accuracy: 9405/10000 (94%)
 
 By default, this code puts results in an `/output` subdirectory, in `metrics.json`.
 
-If this doesn't run for you, double-check your Python (or perhaps Beaker) configurations; note that Python 3.6.5 or later is required by this experiment.
+If this doesn't run for you, double-check your Python (or perhaps Beaker) configurations; note that
+Python 3.6.5 or later is required by this experiment.
 
-All of the above simply represents an experiment's code and dataset running locally, as you would do without using Beaker. This code produces locally what the [prior example](experiment.md) produced using the Beaker cloud.
+All of the above simply represents an experiment's code and dataset running locally, as you would do
+without using Beaker. This code produces locally what the [prior example](experiment.md) produced
+using the Beaker cloud.
 
-The next step towards packaging this code and data so it can be run in Beaker is to build a corresponding a Docker image.
+The next step towards packaging this code and data so it can be run in Beaker is to build a
+corresponding a Docker image.
 
 ## Build a Docker image
 
-To build the docker image from the existing Dockerfile (which you cloned from Github), from the command line run:
+To build the docker image from the existing Dockerfile (which you cloned from Github), from the
+command line run:
 
 ```
 $ docker build -t mymnist .
@@ -113,9 +118,13 @@ You should see the Docker steps complete, and conclude successfully with a messa
 Successfully tagged mymnist:latest
 ```
 
-This Docker CLI command instructed Docker to build an image based on the files at the current directory, using the Dockerfile that you cloned to this location, and you tagged it `mynist`.
+This Docker CLI command instructed Docker to build an image based on the files at the current
+directory, using the Dockerfile that you cloned to this location, and you tagged it `mynist`.
 
-In later examples, we'll show you how to set up your own Dockerfile for building images. For now, simply use the provided Dockerfile that you downloaded from Github. If you want, you can view the Dockerfile's txt contents to see its base image, ENV instructions, and so on. For now, don't make any changes to it.
+In later examples, we'll show you how to set up your own Dockerfile for building images. For now,
+simply use the provided Dockerfile that you downloaded from Github. If you want, you can view the
+Dockerfile's txt contents to see its base image, ENV instructions, and so on. For now, don't make
+any changes to it.
 
 ## Create a Beaker image
 
@@ -144,27 +153,15 @@ renamed, but its ID is guaranteed to remain stable. The following two commands a
 ### Inspect the image
 
 ```
-$ beaker image inspect mymnist
-$ beaker image inspect im_8ugouwgec4gn
+$ beaker image get --format=json <your_user_name>/mymnist
+$ beaker image get im_8ugouwgec4gn
 ```
 
 Either should produce CLI output such as:
 
 ```
-[
-    {
-        "id": "im_8ugouwgec4gn",
-        "user": {
-            "id": "<your_user_id>",
-            "name": "<your_user_name>",
-            "display_name": ""
-        },
-        "name": "mymnist",
-        "created": "2019-02-25T19:51:00.116911Z",
-        "committed": "2019-02-25T19:51:05.103003Z",
-        "original_tag": "mnist"
-    }
-]
+ID                       WORKSPACE                 AUTHOR            CREATED
+<your_user_name>/mynist  <your_user_name>/default  <your_user_name>  2019-02-25 11:40:49
 ```
 
 ### Pull an image
@@ -204,62 +201,36 @@ directory. From your CLI enter:
 
 ```
 $ beaker dataset create --name mymnist-dataset ./data
-```
-
-```
 Uploading mymnist-dataset (ds_q76gp0s33d01)...
 Done.
 ```
-Notice that the dataset is assigned a unique ID (above, `ds_q76gp0s33d01`; yours will differ) in addition to the name we chose (`mymnist-dataset`). Like images, datasets can be referred to by its name or ID. A dataset can be renamed, but its ID is guaranteed to remain stable. The following two commands are equivalent:
+
+Notice that the dataset is assigned a unique ID (above, `ds_q76gp0s33d01`; yours will differ) in
+addition to the name we chose (`mymnist-dataset`). Like images, datasets can be referred to by its
+name or ID. A dataset can be renamed, but its ID is guaranteed to remain stable. The following two
+commands are equivalent:
 
 ```
-$ beaker dataset inspect mymnist-dataset
-$ beaker dataset inspect ds_q76gp0s33d01
+$ beaker dataset get <my-user-name>/mymnist-dataset
+$ beaker dataset get ds_q76gp0s33d01
 ```
 
 ### Inspect the dataset
 
-A dataset can be inspected with `beaker dataset inspect`, which produces a JSON representation of
-the dataset.
+A dataset can be inspected with `beaker dataset get`.
 
 ```
-$ beaker dataset inspect mymnist-dataset
-[
-    {
-        "id": "ds_9ux8avul9w7k",
-        "name": "mymnist-dataset",
-        "owner": {
-            "id": "us_wvnghctl47k0",
-            "name": "ai2",
-            "displayName": "AI2"
-        },
-        "author": {
-            "id": "us_7ay01can5lmg",
-            "name": "michaels",
-            "displayName": "Michael Schmitz"
-        },
-        "workspaceRef": {
-            "id": "us_wvnghctl47k0/01DQ8VCF2M5ET36Y87QF3HK10W",
-            "name": "ai2/MichaelSchmitz"
-        },
-        "created": "2020-02-27T23:10:05.842869Z",
-        "committed": "2020-02-27T23:12:06.801955Z",
-        "archived": false,
-        "storage": {
-            "address": "https://data.beaker.org",
-            "id": "01e24em3s4d82e571p01hpk4cx",
-            "token": "...",
-            "tokenExpires": "2020-02-28T11:13:24.378467869Z"
-        }
-    }
-]
+▶ beaker dataset get ds_9ux8avul9w7k
+ID               WORKSPACE    AUTHOR    COMMITTED        SOURCE TASK
+mymnist-dataset  Leaderboard  michaels  Feb 27 23:12:06  N/A
 ```
 
 ### Download
 
-As you might recall from setting up this code and data earlier, you can download a dataset to your local drive at any time with `beaker dataset fetch`. Beaker's
-`fetch` command follows the same rules as the standard `cp` command. The following example downloads
-the mymnist-dataset dataset to an empty directory. Notice how the original filename is restored by default.
+As you might recall from setting up this code and data earlier, you can download a dataset to your
+local drive at any time with `beaker dataset fetch`. Beaker's `fetch` command follows the same rules
+as the standard `cp` command. The following example downloads the mymnist-dataset dataset to an
+empty directory. Notice how the original filename is restored by default.
 
 ```
 $ mkdir fetched
@@ -267,7 +238,10 @@ $ beaker dataset fetch -o fetched mymnist-dataset
 Downloading dataset ds_q76gp0s33d01 to directory fetched/ ... done.
 ```
 
-You already have this data, since you just created this dataset by uploading it. But, you could now clean up your local system by removing your local files, then restore your dataset from Beaker in the future with `beaker dataset fetch`. Or, easily share with others or migrate an experiment to a new machine.
+You already have this data, since you just created this dataset by uploading it. But, you could now
+clean up your local system by removing your local files, then restore your dataset from Beaker in
+the future with `beaker dataset fetch`. Or, easily share with others or migrate an experiment to a
+new machine.
 
 If all of the above is working for you, that's it! See the detailed
 [spec](../concept/experiments.md#spec-format) documentation to write your own experiments.

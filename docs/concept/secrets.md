@@ -12,31 +12,31 @@ Secrets can be created from the [Beaker CLI](https://github.com/allenai/beaker).
 Creating a secret from the command line:
 
 ```bash
-beaker secret write --workspace=ai2/{workspace} secret-name value
+beaker secret write ai2/{workspace} secret-name value
 ```
 
 Creating a secret from stdin:
 
 ```bash
-echo "value" | beaker secret write --workspace=ai2/{workspace} secret-name
+echo "value" | beaker secret write ai2/{workspace} secret-name
 ```
 
 Creating a secret from a file:
 
 ```bash
-cat file | beaker secret write --workspace=ai2/{workspace} secret-name
+cat file | beaker secret write ai2/{workspace} secret-name
 ```
 
 Creating a secret from an environment variable:
 
 ```bash
-beaker secret write --workspace=ai2/{workspace} secret-name $VALUE
+beaker secret write ai2/{workspace} secret-name $VALUE
 ```
 
 ## Listing Secrets
 
 ```
-beaker secret list --workspace=ai2/workspace
+beaker secret list ai2/workspace
 ```
 
 ```
@@ -47,7 +47,7 @@ secret-name 2020-11-17T00:33:52Z 2020-11-17T00:33:52Z
 ## Reading a Secret
 
 ```
-beaker secret read --workspace={workspace} {secret name}
+beaker secret read {workspace} {secret name}
 ```
 
 ## Using a Secret in a Task

@@ -39,4 +39,6 @@ tasks:
       beaker: examples/moby
   result:
     path: /output
+  context:
+    cluster: ai2/example
 ```
