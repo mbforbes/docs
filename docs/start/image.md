@@ -1,8 +1,8 @@
 # Create an Image and Dataset
 
-In this step, you'll use existing experiment code, data, and a Docker file. You'll define your own Beaker *image*, to define and manage the experiment you will run, and a Beaker *dataset* to hold the source data. This example locally reproduces the existing MNIST experiment of the [prior example](experiment.md).
+In this step, you'll use existing experiment code, data, and a Docker file. You'll create and upload your own Docker *image*, which will define the environment for your experiment, and a Beaker *dataset* to hold the source data. This example locally reproduces the existing MNIST experiment of the [prior example](experiment.md).
 
-Don't worry if you don't know much about Python, Pytorch, or MNIST data; you don't need to. Rather, this exercise simply shows you how to run a full experiment with Beaker. You should then be able to apply these concepts to your own code, data, and experiments, to manage them with Beaker.
+Don't worry if you don't know much about Python, PyTorch, or MNIST data; you don't need to. Rather, this exercise simply shows you how to run a full experiment with Beaker. You should then be able to apply these concepts to your own code, data, and experiments, to manage them with Beaker.
 
 This example assumes you've successfully completed [Beaker and Docker installation](install.md), and you've set up your [Beaker.org](https://www.beaker.org) account so that you can run experiments as shown in [Your First Experiment](experiment.md).
 

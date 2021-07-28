@@ -26,7 +26,7 @@ There are a few different ways to install Beaker:
     ```bash
     tar -xvzf beaker_*.tar.gz -C /usr/local/bin
     ```
-    
+
     Place the binary executable in your PATH (e.g., /usr/local/bin/ or ~/bin).
 
 - macOS users can install Beaker through [Homebrew](https://brew.sh/) with a custom tap:
@@ -41,17 +41,17 @@ There are a few different ways to install Beaker:
     ```bash
     go get -u github.com/allenai/beaker/...
     ```
-  
+
 ## Configure and Test
 
 To set up Beaker, log in to [beaker.org](https://beaker.org) and follow the instructions in your [account](https://beaker.org/user) page.
 
 ## Docker
 
-You must install Docker to use Beaker, because Beaker is built around managing experiment code contained in Docker containers.
+You will need to install Docker to use Beaker.  Docker provides a repeatable environment for your application so Beaker can run it on any machine.
 
-Install the appropriate Docker Desktop version from the [Docker site](https://www.docker.com/products/docker-desktop), following Docker's instructions.
+Please install the appropriate Docker Desktop version from the [Docker site](https://www.docker.com/products/docker-desktop), following Docker's instructions.
 
 ## Next step
 
-When you have your Beaker.org account, Beaker, and Docker each installed and configured, proceed to [your first experiment](experiment.md) to learn the fundamentals of experiments with Beaker. 
+When you have your Beaker.org account, Beaker, and Docker each installed and configured, proceed to [your first experiment](experiment.md) to learn the fundamentals of experiments with Beaker.

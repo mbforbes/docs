@@ -1,7 +1,12 @@
 # User Guide
 
-[Beaker](https://beaker.org) is a collaborative platform for
-rapid, reproducible research.
+[Beaker](https://beaker.org) is a collaborative platform for rapid, reproducible research.  Beaker
+frees you from manually managing your machines, allowing you to seamlessly:
+
+* move experiments between the cloud and on-premise with a single line of config.
+* script hundreds of related experiments to run in parallel.
+* view your experiments' progress and results using the [web UI](http://www.beaker.org).
+* create an isolated interactive session for development and debugging.
 
 ## Other Resources
 
