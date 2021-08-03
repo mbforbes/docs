@@ -17,8 +17,7 @@ frees you from manually managing your machines, allowing you to seamlessly:
 ### Get Started
 
 * [Install](/docs/start/install.md)
-* [Your First Experiment](/docs/start/experiment.md)
-* [Images and Datasets](/docs/start/image.md)
+* [Running Your First Experiment](/docs/start/run.md)
 * [Interactive Sessions](/docs/start/interactive.md)
 
 ### Learn Concepts
