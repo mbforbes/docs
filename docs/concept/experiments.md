@@ -62,7 +62,7 @@ Task describes a single job, or process.
 | context | [Context](#context) | Yes | Context describes how and where this task should run. |
 
 \* Though tasks may be anonymous for compatibility reasons, we recommend always
-assigning a name. 
+assigning a name.
 
 ### ImageSource
 
@@ -71,7 +71,7 @@ download, this image immediately before running the task.
 
 | Field | Type | Required? | Description |
 | ----- | ---- | :-------: | ----------- |
-| beaker | string | No\* | Name or ID of a [Beaker image](./images.md) | 
+| beaker | string | No\* | Name or ID of a [Beaker image](./images.md) |
 | docker | string | No\* | Tag of a Docker image hosted on the [Docker Hub](https://hub.docker.com) or a private registry. If the tag is from a private registry, the cluster on which the task will run must be pre-configured to enable access. |
 
 \* Exactly one field must be defined.
@@ -132,13 +132,36 @@ future date.
 ### TaskResources
 
 TaskResources describe minimum external hardware requirements which must be available for a task to
-run. Beaker guarantees a task will not run until all defined requirements are met. A task may be
-given greater resources than defined here.
+run.
+
+TaskResources are optional. If a task does not specify any resource requirements, it will:
+ - Run immediately.
+ - Not have access to GPUs.
+ - Not have a memory limit.
+ - Be killed if the host machine is running out of memory.
+
+If a task specifies resource requirements, it will claim a slice of the machine proportional to its largest resource request.
+Each machine is divided into a number of slots equal to the number of GPUs it has, or 1 slot if it has no GPUs.
+Tasks that specify resource requirements are allocated enough slots to accomodate their requirements.
+
+For example, if a machine has 8 GPUs and 80GiB of memory, it will be divided into 8 slots, each with 1 GPU and 10GiB of memory.
+If a job requests 1 GPU, it will get 1 GPU and 10GiB of memory.
+If it requests 15 GiB of memory, it will get 2 GPUs and 20GiB of memory.
+Note that in this example, the job is allocated 2 GPUs even though it didn't request any.
+
+If a task specifies resource requirements, it will:
+ - Wait to run until there are sufficient resources available on the machine.
+ - Have guaranteed access to at least the resources it requested.
+ - Have limited memory proportional to the number of slots it is using.
+ - Not be killed if the host machine is running out of memory.
+
+Note on CPUs: The amount of CPU a job can use is only limited when there is contention.
+During periods of contention, each job gets a share of the CPU proportional to the number of slots it is using.
 
 | Field | Type | Required? | Description |
 | ----- | ---- | :-------: | ----------- |
-| cpuCount | double | No | Minimum number of logical CPU cores. It may be fractional.<br><br>Examples: `4`, `0.5`. |
-| gpuCount | int | No | Minimum number of GPU-cores. It must be non-negative. |
+| cpuCount | double | No | Minimum number of logical CPU cores. It may be fractional. Since CPU is only limited during periods of contention, it's generally not necessary to specify this field.<br><br>Examples: `4`, `0.5`. |
+| gpuCount | int | No | Minimum number of GPUs. It must be non-negative. |
 | memory | string | No | Minimum available system memory as a number with unit suffix. `memory` must match `memoryBytes` exactly if both are set.<br><br>Examples: `2.5GiB`, `10240m`. |
 | memoryBytes | int | No | Minimum available system memory as an exact byte count. `memoryBytes` must match `memory` exactly if both are set. |
 
@@ -163,7 +186,7 @@ tasks:
     image: myaccount/myimage
 
     # (optional) The DockerHub image tag. Either this or image is required.
-    dockerImage: busybox:latest 
+    dockerImage: busybox:latest
 
     # (required) Where results will be placed.
     # Beaker automatically uploads files as the job runs.
@@ -185,7 +208,7 @@ tasks:
 
       # Mount '/foo.yaml' from a config dataset to '/path/to/config.yml'.
       # The subPath field mounts files or subdirectories within a dataset.
-      - datasetId: config-dataset 
+      - datasetId: config-dataset
         subPath: foo.yaml
         containerPath: /path/to/config.yml
 

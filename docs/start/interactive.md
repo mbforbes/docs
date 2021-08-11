@@ -39,12 +39,15 @@ between sessions on that node. NFS is also available in the `/net` directory.
 
 ### Reserving GPUs
 
-By default, sessions aren't assigned a GPU. If you need GPUs, use the `--gpus <count>`
-flag when creating a session e.g.:
+By default, sessions do not request any resources and won't be assigned a GPU.
+If you need GPUs, use the `--gpus <count>` flag when creating a session e.g.:
 
 ```
 beaker session create --gpus 2
 ```
+
+Session resources work the same as task resources, which are described [here](../concept/experiments.md#TaskResources)
+Node that sessions that don't request GPUs are not guaranteed any memory and may be killed if there is contention for memory on the machine.
 
 ### Running a Command
 
